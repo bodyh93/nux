@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: ./deploy/Dockerfile
+    volumes:
+      - .:/var/www/nux
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - .:/var/www/nux
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
